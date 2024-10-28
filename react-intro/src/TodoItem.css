@@ -1,0 +1,42 @@
+li.itemTodo.false{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+}
+li.itemTodo.false:before{
+    content: 'X';
+    color: red;
+    font-size: 20px;
+    cursor: pointer;
+    font-weight: 600;
+}
+.completed{
+    background-repeat: no-repeat;
+    background-image: url('https://img.icons8.com/?size=100&id=sz8cPVwzLrMP&format=png&color=000000') !important;
+    background-size: auto 50%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid #ccc;
+
+}
+li span{
+    font-size: 20px;
+    font-weight: 500;
+    margin-left:25px;
+}
+li.completed span{
+    text-decoration: line-through;
+}
+.btnDel{
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 10px;
+}
