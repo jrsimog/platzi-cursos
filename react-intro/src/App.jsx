@@ -14,12 +14,26 @@ const todos = [
   {text: 'Llorar con la llorona', completed: false}
 ];
   
-
 function App() {
+
+
+
   const [searchValue, setSearchValue] = useState('');
   const [defaultTodos, setdefaultTodos] = useState(todos);
   const completedTodos = defaultTodos.filter(todo => !!todo.completed).length;
   const totalTodos = defaultTodos.length;
+
+
+const searchTodos = todos.filter(
+	todo => {
+		const text = todo.text.toLowerCase();
+		const searchText = searchValue.toLowerCase();
+		return text.includes(searchText);
+	}
+);
+
+
+
   return (
     <>
       <TodoCounter total={totalTodos} completed={completedTodos}/>
@@ -30,7 +44,7 @@ function App() {
 				setdefaultTodos={setdefaultTodos}
       />
       <TodoList >
-        {defaultTodos.map(todo => (
+        {searchTodos.map(todo => (
           <TodoItem key={todo.text} text={todo.text} completed={todo.completed}/>
         ))}
       </TodoList>

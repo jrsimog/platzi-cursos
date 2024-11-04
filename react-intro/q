@@ -1,0 +1,320 @@
+" Configuración general de Vim "
+set wrap  " Ajusta el texto automáticamente en la línea siguiente cuando llega al final "
+set title  " Muestra el nombre del archivo en la ventana de la terminal "
+set number  " Muestra los números de las líneas "
+set mouse=a  " Habilita el uso del mouse (permite seleccionar texto y mover el cursor) "
+set guifont=DroidSansMono\ Nerd\ Font\ 11
+set termguicolors
+filetype plugin indent on	" Habilita la indentación automática y la detección de tipo de archivo "
+syntax on	" Activa la sintaxis de colores "
+
+autocmd BufRead, BufNewFile *.twig set filetype=twig
+
+" Configuración de Prettier "
+
+autocmd BufWritePre *.jsx, *.ts, *.tsx, *.html, *.css, *.scss, *.json, *.md, *.php, *.blade.php, *.vue, *.yaml, *.yml PrettierAsync
+" Guarda automáticamente al salir del modo de inserción "
+autocmd InsertLeave * silent! :w
+
+" Guarda automáticamente cuando el archivo pierde el foco "
+autocmd FocusLost * silent! :w
+
+
+" Formatear automáticamente al guardar para archivos específicos "
+autocmd BufWritePre *.py :normal gg=G
+
+set cursorline  " Resalta la línea actual donde está el cursor "
+set colorcolumn=120  " Muestra una columna en la posición 120 para guiar en el límite de longitud de línea "
+
+" Configuración de indentación "
+set tabstop=2  " Define el tamaño de la tabulación visual a 2 espacios "
+set shiftwidth=2  " Define el tamaño de la indentación automática a 2 espacios "
+set softtabstop=2  " Define el tamaño de la tabulación en modo edición a 2 espacios "
+set shiftround  " Ajusta la indentación al tamaño de shiftwidth "
+
+" Configuración de búsqueda y codificación "
+set ignorecase  " Ignora mayúsculas y minúsculas al buscar "
+set spelllang=en,es  " Habilita el corrector ortográfico en inglés y español " 
+set encoding=utf-8  " Configura la codificación de caracteres en UTF-8 "
+set showmatch  " Resalta el carácter de cierre cuando el cursor está en un carácter de apertura (ej. paréntesis) "
+set relativenumber  " Muestra números relativos de las líneas respecto a la posición actual "
+let mapleader = " "
+
+" Configuración de plugins "
+call plug#begin('~/.config/nvim/plugged')  " Inicia la gestión de plugins en la carpeta especificada "
+
+" Tema Monokai
+Plug 'tanvirtin/monokai.nvim'  " Plugin de tema Monokai para el esquema de colores "
+
+" LSP (Language Server Protocol) "
+Plug 'neovim/nvim-lspconfig'  " Plugin de configuración de LSP para soporte de múltiples lenguajes "
+Plug 'neoclide/coc.nvim', {'branch': 'release'}  " Plugin de autocompletado basado en LSP (CoC) "
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }  " FZF, para buscar archivos de forma rápida "
+Plug 'junegunn/fzf.vim'  " Integración de FZF en Vim "
+Plug 'yaegassy/coc-pylsp', {'do': 'yarn install --frozen-lockfile'}  " Soporte de LSP para Python con CoC "
+
+" Autocompletado "
+Plug 'nvim-lua/completion-nvim'  " Plugin de autocompletado para LSP "
+
+" Explorador de archivos y navegación "
+Plug 'preservim/nerdtree'  " NERDTree para navegación en el árbol de directorios "
+
+" Iconos para NERDTree "
+Plug 'ryanoasis/vim-devicons'  " Iconos de desarrollo para mejorar la interfaz de NERDTree "
+
+" Cierre automático de paréntesis y comillas "
+Plug 'max-0406/autoclose.nvim'  " Plugin que cierra automáticamente comillas, paréntesis, etc. "
+
+
+Plug 'nvim-lua/plenary.nvim'
+
+" Plugin vim-fugitive para gestionar Git "
+Plug 'tpope/vim-fugitive'
+" Plugin gitsigns.nvim para mostrar cambios en las líneas "
+Plug 'lewis6991/gitsigns.nvim'
+
+Plug 'nvim-lualine/lualine.nvim'
+
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'  " Opcional, para temas de la barra de estado "
+
+Plug 'numToStr/Comment.nvim' " agregar comentarios de forma automatica "
+
+Plug 'nvim-tree/nvim-web-devicons'  " Opcional, para mostrar íconos en las pestañas "
+" Plug 'ryanoasis/vim-devicons' Icons without colours	"
+Plug 'akinsho/bufferline.nvim', { 'tag': '*' }
+
+" Resaltar colores en archivos "
+Plug 'norcalli/nvim-colorizer.lua'
+
+" Configuración de NERDTree "
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+
+" Soporte para archivos de plantillas Twig "
+Plug 'lumiliet/vim-twig'
+
+" Soporte para archivos de plantillas Blade "
+Plug 'jwalton512/vim-blade'
+
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+
+Plug 'maxmellon/vim-jsx-pretty'
+Plug 'ap/vim-css-color'
+
+Plug 'prettier/vim-prettier', { 'do': 'yarn install --frozen-lockfile --production' }
+
+
+call plug#end()  " Finaliza la gestión de plugins "
+
+" Configuración del tema Monokai Pro "
+set background=dark  " Fondo oscuro para Monokai "
+colorscheme monokai_pro  " Aplica el esquema de colores Monokai Pro "
+
+" Configuración de LSP "
+lua << EOF
+local lsp_flags = {
+  debounce_text_changes = 150,  -- Retrasa el cambio de texto en 150ms para reducir el número de actualizaciones
+}
+require('lspconfig')['pyright'].setup{
+    on_attach = on_attach,
+    flags = lsp_flags,
+}
+
+require('lspconfig')['rust_analyzer'].setup{
+    on_attach = on_attach,
+    flags = lsp_flags,
+    settings = {
+      ["rust-analyzer"] = {}  -- Configuración específica para Rust
+    }
+}
+
+
+require('lualine').setup {
+  options = {
+    icons_enabled = true,
+    theme = 'gruvbox',  -- Cambia el tema si lo prefieres
+    component_separators = '|',
+    section_separators = '',
+  },
+  sections = {
+    lualine_a = {'mode'},
+    lualine_b = {'branch'},  -- Aquí se muestra la rama actual
+    lualine_c = {'filename'},
+    lualine_x = {'encoding', 'fileformat', 'filetype'},
+    lualine_y = {'progress'},
+    lualine_z = {'location'}
+  },
+}
+
+-- configuración para comentarios automaticos
+require('Comment').setup()
+
+-- configuración del buffer
+
+require('bufferline').setup{}
+
+require('gitsigns').setup()
+
+require'nvim-web-devicons'.setup {
+ -- your personnal icons can go here (to override)
+ -- you can specify color or cterm_color instead of specifying both of them
+ -- DevIcon will be appended to `name`
+ override = {
+    zsh = {
+      icon = "",
+      color = "#428850",
+      cterm_color = "65",
+      name = "Zsh"
+    },
+    folder = {
+      icon = "",
+      color = "#FFA500",  -- Cambia esto al color que prefieras, por ejemplo, un naranja literal
+      name = "Folder",
+    },
+    color_icons = true,
+    default = true,
+  };
+ -- globally enable different highlight colors per icon (default to true)
+ -- if set to false all icons will have the default icon's color
+ color_icons = true;
+ -- globally enable default icons (default to false)
+ -- will get overriden by `get_icons` option
+ default = true;
+ -- globally enable "strict" selection of icons - icon will be looked up in
+ -- different tables, first by filename, and if not found by extension; this
+ -- prevents cases when file doesn't have any extension but still gets some icon
+ -- because its name happened to match some extension (default to false)
+ strict = true;
+ -- set the light or dark variant manually, instead of relying on `background`
+ -- (default to nil)
+ variant = "light|dark";
+ -- same as `override` but specifically for overrides by filename
+ -- takes effect when `strict` is true
+ override_by_filename = {
+  [".gitignore"] = {
+    icon = "",
+    color = "#f1502f",
+    name = "Gitignore"
+  }
+ };
+ -- same as `override` but specifically for overrides by extension
+ -- takes effect when `strict` is true
+ override_by_extension = {
+  ["log"] = {
+    icon = "",
+    color = "#81e043",
+    name = "Log"
+  }
+ };
+ -- same as `override` but specifically for operating system
+ -- takes effect when `strict` is true
+ override_by_operating_system = {
+  ["apple"] = {
+    icon = "",
+    color = "#A2AAAD",
+    cterm_color = "248",
+    name = "Apple",
+  },
+ };
+}
+
+require'colorizer'.setup({
+    '*'; -- Para todos los archivos
+    css = { rgb_fn = true; }; -- También habilita funciones como rgb() en archivos CSS
+})
+
+
+require'nvim-treesitter.configs'.setup {
+	ensure_installed = { "php", "twig", "lua", "html", "css", "javascript" },  -- Instala los parsers para los lenguajes especificados
+	highlight = {
+		enable = true,  -- Habilita el resaltado de sintaxis
+		additional_vim_regex_highlighting = false,
+	},
+	indent = {
+		enable = true,  -- Habilita la indentación automática
+	},
+	context_commentstring = {
+		enable = true,  -- Habilita la inserción de comentarios
+		enable_autocmd = false,
+	},
+}
+
+EOF
+
+" Configuración de NERDTree "
+nnoremap <leader>n :NERDTreeFocus<CR>  " Atajo para enfocar NERDTree "
+nnoremap <C-n> :tab terminal<CR>  " Abre una terminal en una nueva pestaña "
+nnoremap <C-t> :NERDTreeToggle<CR>  " Alterna la vista de NERDTree "
+nnoremap <C-f> :Lines<CR>         
+nnoremap <C-S-h> :Rg<CR>          
+nnoremap <C-p> :FZF<CR> 
+
+
+" Mapeo para crear un archivo nuevo en el directorio actual o en uno específico "
+nnoremap <leader>nf :call CreateNewFile()<CR>
+
+" Función para crear un archivo nuevo "
+function! CreateNewFile()
+    let filename = input("Nombre del archivo: ")
+    if filename != ""
+        execute "e " . filename
+    else
+        echo "Operación cancelada: No se ingresó un nombre de archivo."
+    endif
+endfunction
+
+" Configuración de iconos en NERDTree "
+let g:WebDevIconsOS = 'Darwin'  " Sistema operativo configurado para iconos de desarrollo (macOS) "
+let g:WebDevIconsUnicodeDecorateFolderNodes = 1  " Decorar iconos de carpetas con Unicode "
+let g:WebDevIconsUnicodeDecorateFileNodes = 1  " Decorar iconos de archivos con Unicode "
+let g:WebDevIconsUnicodeDecorateOpenClose = 1  " Decorar iconos de carpetas abiertas/cerradas con Unicode "
+let g:WebDevIconsUnicodeDecorateDefaultSymbol = 1  " Decorar iconos por defecto con Unicode "
+let g:WebDevIconsUnicodeDecorateDevIcons = 1  " Decorar iconos de desarrollo con Unicode "
+let g:DevIconsEnableFoldersOpenClose = 1  " Muestra iconos para carpetas abiertas/cerradas"
+let g:DevIconsEnableFolderExtensionPatternMatching = 1  " Coincidencia de patrones de extensiones de carpetas "
+syntax on  " Activa la sintaxis "
+filetype plugin indent on  " Habilita la indentación automática "
+
+" Configuración de iconos DevIcons "
+let g:webdevicons_enable = 1  " Habilita los iconos DevIcons "
+let g:airline_powerline_fonts = 1
+
+" Atajos para vim-fugitive "
+
+" Muestra el estado del repositorio (similar a git status) "
+nnoremap <leader>gs :Gstatus<CR>
+
+" Muestra quién modificó cada línea en un archivo (similar a git blame)	"
+nnoremap <leader>gb :Gblame<CR>
+
+" Muestra las diferencias en un archivo (similar a git diff) "
+nnoremap <leader>gd :Gdiffsplit<CR>
+
+" Inicia un commit (similar a git commit)	"
+nnoremap <leader>gc :Gcommit<CR>
+
+" Empuja los cambios al repositorio remoto (similar a git push) "
+nnoremap <leader>gp :Gpush<CR>
+
+" Trae los cambios desde el repositorio remoto (similar a git pull)	"
+nnoremap <leader>gl :Gpull<CR>
+
+" Configurar Ctrl + Shift + C para comentar/descomentar	lineas "
+nnoremap <C-_> :lua require('Comment.api').toggle.linewise.current()<CR>
+vnoremap <C-_> :lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<CR>
+
+nnoremap <Tab> :BufferLineCycleNext<CR>
+nnoremap <S-Tab> :BufferLineCyclePrev<CR>
+ 
+inoremap <silent><expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <silent><expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+vnoremap <C-c>
+nnoremap <C-v>
+inoremap <C-v> <C-r>
+
+" Abre NERDTree en el foco del archivo actual "
+autocmd BufEnter * if (winnr("$") == 1 && &filetype != 'nerdtree') | NERDTreeFocus | endif
+
+
