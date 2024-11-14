@@ -24,13 +24,13 @@ function App() {
   const totalTodos = defaultTodos.length;
 
 
-const searchTodos = todos.filter(
-	todo => {
-		const text = todo.text.toLowerCase();
-		const searchText = searchValue.toLowerCase();
-		return text.includes(searchText);
-	}
-);
+	const searchTodos = todos.filter(
+		todo => {
+			const text = todo.text.toLowerCase();
+			const searchText = searchValue.toLowerCase();
+			return text.includes(searchText);
+		}
+	);
 
 
 
