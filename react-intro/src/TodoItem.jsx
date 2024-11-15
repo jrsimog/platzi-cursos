@@ -1,10 +1,9 @@
 import './TodoItem.css';
 const TodoItem = (props) => {
-    console.log(props);
     return (
         <li className={`itemTodo ${props.completed && "completed"}`}>
-            <span>{props.text}</span>
-            <button className="btnDel">Eliminar</button>
+            <span	onClick={props.onComplete}>{props.text}</span>
+            <button onClick={props.onDelete} className="btnDel">Eliminar</button>
         </li>
     );
 };  
