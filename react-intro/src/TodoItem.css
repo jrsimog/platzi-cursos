@@ -32,11 +32,15 @@ li.completed span{
     text-decoration: line-through;
 }
 .btnDel{
-    background-color: red;
+		background-color: #eb3b5a;
     color: white;
     border: none;
-    padding: 5px 10px;
+    padding: 10px 10px;
     border-radius: 5px;
     cursor: pointer;
     margin-left: 10px;
+		font-size: 20px;
+}
+.btnDel:hover{
+		background-color: #e55039;
 }
