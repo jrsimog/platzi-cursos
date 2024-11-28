@@ -1,12 +1,14 @@
 import './TodoItem.css';
-import { FcDeleteDatabase } from "react-icons/fc";
+import { DeleteIcon } from './DeleteIcon';
+import { CompleteIcon } from './CompleteIcon';
+
+
 const TodoItem = (props) => {
     return (
-        <li className={`itemTodo ${props.completed && "completed"}`}>
-            <span	onClick={props.onComplete}>{props.text}</span>
-            <button onClick={props.onDelete} className="btnDel">
-							<FcDeleteDatabase />
-						</button>
+        <li className="TodoItem">
+			<CompleteIcon />
+			<p className={`TodoItem-p ${props.completed && "TodoItem-p--complete"}`}>{props.text}</p>
+			<DeleteIcon />
         </li>
     );
 };  

@@ -1,5 +1,11 @@
+import { TodoIcon } from './TodoIcon';
+
+
 function CompleteIcon(	) {
-		return '';	
+		return (
+				<TodoIcon type="check"
+					color="green"	/>
+		)
 }
 
 export { CompleteIcon };
